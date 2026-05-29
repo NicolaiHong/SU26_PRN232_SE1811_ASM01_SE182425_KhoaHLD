@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37301.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HEMSystems.Entities.KhoaHLD", "HEMSystmes.Entities.KhoaHLD\HEMSystems.Entities.KhoaHLD.csproj", "{75835119-AD7F-4702-AC3F-F22AADA06598}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HEMSystems.Repositories.KhoaHLD", "HEMSystems.Repositories.KhoaHLD\HEMSystems.Repositories.KhoaHLD.csproj", "{D0B4DE55-9891-446D-9956-0FE339AE725B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HEMSystems.Services.KhoaHLD", "HEMSystems.Services.KhoaHLD\HEMSystems.Services.KhoaHLD.csproj", "{44969B57-9295-4969-8EC5-FE8305A79582}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HEMSystems.WebApp.KhoaHLD", "HEMSystems.WebApp.KhoaHLD\HEMSystems.WebApp.KhoaHLD.csproj", "{19A6DEC8-5B28-4C17-99D0-559FFE2C61D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75835119-AD7F-4702-AC3F-F22AADA06598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75835119-AD7F-4702-AC3F-F22AADA06598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75835119-AD7F-4702-AC3F-F22AADA06598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75835119-AD7F-4702-AC3F-F22AADA06598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0B4DE55-9891-446D-9956-0FE339AE725B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0B4DE55-9891-446D-9956-0FE339AE725B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0B4DE55-9891-446D-9956-0FE339AE725B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0B4DE55-9891-446D-9956-0FE339AE725B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44969B57-9295-4969-8EC5-FE8305A79582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44969B57-9295-4969-8EC5-FE8305A79582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44969B57-9295-4969-8EC5-FE8305A79582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44969B57-9295-4969-8EC5-FE8305A79582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19A6DEC8-5B28-4C17-99D0-559FFE2C61D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19A6DEC8-5B28-4C17-99D0-559FFE2C61D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19A6DEC8-5B28-4C17-99D0-559FFE2C61D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19A6DEC8-5B28-4C17-99D0-559FFE2C61D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F06B80F7-A068-48A6-9CDE-F525CB4DCE26}
+	EndGlobalSection
+EndGlobal
