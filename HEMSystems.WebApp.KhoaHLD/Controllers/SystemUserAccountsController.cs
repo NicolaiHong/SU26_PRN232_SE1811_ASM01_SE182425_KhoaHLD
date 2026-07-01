@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using HEMSystems.Services.KhoaHLD;
 using HEMSystems.Services.KhoaHLD.DTOs;
+using HEMSystems.WebApp.KhoaHLD.Commons;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -30,8 +32,33 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
                 return Unauthorized();
 
             var token = GenerateJSONWebToken(response);
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                var apiResponse = new ApiResponse<string?>
+                {
+                    StatusCode = StatusCodes.Status403Forbidden,
+                    Message = "This role is not allowed to access the system.",
+                    Data = null
+                };
+
+                return StatusCode(StatusCodes.Status403Forbidden, apiResponse);
+            }
 
             return Ok(token);
+        }
+
+        [HttpPost("Logout")]
+        [Authorize]
+        public IActionResult Logout()
+        {
+            var apiResponse = new ApiResponse<string?>
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Logged out successfully. Remove the bearer token from the client.",
+                Data = null
+            };
+
+            return StatusCode(StatusCodes.Status200OK, apiResponse);
         }
 
         private string GenerateJSONWebToken(GetUserAccountResponse systemUserAccount)

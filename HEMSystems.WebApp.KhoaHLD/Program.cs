@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using HEMSystems.Repositories.KhoaHLD;
 using HEMSystems.Services.KhoaHLD;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.OData;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -10,7 +11,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddOData(options => options
+        .Select()
+        .Filter()
+        .OrderBy()
+        .Expand()
+        .Count()
+        .SetMaxTop(100))
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,6 +31,7 @@ builder.Services.AddScoped<ProjectSubmissionsKhoaHldRepository>();
 builder.Services.AddScoped<IProjectSubmissionsKhoaHldService, ProjectSubmissionsKhoaHldService>();
 builder.Services.AddScoped<SystemUserAccountRepository>();
 builder.Services.AddScoped<ISystemUserAccountService, SystemUserAccountService>();
+builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -60,11 +74,6 @@ builder.Services.AddSwaggerGen(option =>
             new string[]{}
         }
     });
-});
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
 });
 var app = builder.Build();
 

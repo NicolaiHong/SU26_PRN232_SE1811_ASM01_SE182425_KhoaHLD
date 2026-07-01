@@ -27,22 +27,31 @@ namespace HEMSystems.Repositories.KhoaHLD
                 .FirstOrDefaultAsync(p => p.SubmissionKhoahldId == id);
         }
 
-        public async Task<List<ProjectSubmissionsKhoaHld>> SearchAsync(
+        public async Task<(List<ProjectSubmissionsKhoaHld> Items, int TotalItems)> SearchAsync(
             string? keyword,
             string? teamId,
             string? roundId,
-            bool? isDeployed)
+            int pageNumber,
+            int pageSize)
         {
-            return await _context.ProjectSubmissionsKhoaHlds
+            var query = _context.ProjectSubmissionsKhoaHlds
                 .Include(p => p.PlatformKhoahld)
                 .Where(p =>
                     (string.IsNullOrEmpty(keyword)
                         || p.ProjectName.Contains(keyword)
                         || p.ProjectDescription.Contains(keyword))
                     && (string.IsNullOrEmpty(teamId) || p.TeamId == teamId)
-                    && (string.IsNullOrEmpty(roundId) || p.RoundId == roundId)
-                    && (isDeployed == null || p.IsDeployed == isDeployed))
+                    && (string.IsNullOrEmpty(roundId) || p.RoundId == roundId));
+
+            var totalItems = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(p => p.SubmissionKhoahldId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, totalItems);
         }
     }
 }

@@ -1,5 +1,6 @@
 using HEMSystems.Entities.KhoaHLD.Models;
 using HEMSystems.Repositories.KhoaHLD;
+using HEMSystems.Services.KhoaHLD.DTOs.Common;
 using HEMSystems.Services.KhoaHLD.DTOs.DevelopmentPlatform;
 using HEMSystems.Services.KhoaHLD.DTOs.ProjectSubmission;
 
@@ -76,22 +77,38 @@ namespace HEMSystems.Services.KhoaHLD
             return null;
         }
 
-        public async Task<List<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(
+        public async Task<PagedResult<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(
             string? keyword,
             string? teamId,
             string? roundId,
-            bool? isDeployed)
+            int pageNumber,
+            int pageSize)
         {
+            pageNumber = Math.Max(pageNumber, 1);
+            pageSize = Math.Clamp(pageSize, 1, 100);
+
             try
             {
-                return await _repository.SearchAsync(keyword, teamId, roundId, isDeployed);
+                var (items, totalItems) = await _repository.SearchAsync(keyword, teamId, roundId, pageNumber, pageSize);
+
+                return new PagedResult<ProjectSubmissionsKhoaHld>
+                {
+                    Items = items,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalItems = totalItems
+                };
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred while searching project submissions: {ex.Message}");
             }
 
-            return [];
+            return new PagedResult<ProjectSubmissionsKhoaHld>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
 
         public async Task<int> UpdateProjectSubmissionAsync(int submissionId, ProjectSubmissionUpdateRequest submission)

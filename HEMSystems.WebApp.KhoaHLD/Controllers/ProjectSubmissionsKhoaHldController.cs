@@ -1,14 +1,17 @@
 using HEMSystems.Entities.KhoaHLD.Models;
 using HEMSystems.Services.KhoaHLD;
+using HEMSystems.Services.KhoaHLD.DTOs.Common;
 using HEMSystems.Services.KhoaHLD.DTOs.ProjectSubmission;
 using HEMSystems.WebApp.KhoaHLD.Commons;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace HEMSystems.WebApp.KhoaHLD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1,2")]
     public class ProjectSubmissionsKhoaHldController : ControllerBase
     {
         private readonly IProjectSubmissionsKhoaHldService _projectSubmissionsKhoaHldService;
@@ -19,19 +22,21 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<List<ProjectSubmissionsKhoaHld>> Get()
+        [EnableQuery(PageSize = 50)]
+        public async Task<IQueryable<ProjectSubmissionsKhoaHld>> Get()
         {
             try
             {
-                return await _projectSubmissionsKhoaHldService.GetAllProjectSubmissionsAsync();
+                var submissions = await _projectSubmissionsKhoaHldService.GetAllProjectSubmissionsAsync();
+
+                return submissions.AsQueryable();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return [];
+            return Array.Empty<ProjectSubmissionsKhoaHld>().AsQueryable();
         }
 
         [HttpGet("{id}")]
@@ -74,26 +79,41 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
         }
 
         [HttpGet("Search")]
-        public async Task<List<ProjectSubmissionsKhoaHld>> Search(
+        public async Task<IActionResult> Search(
             [FromQuery] string? keyword,
             [FromQuery] string? teamId,
             [FromQuery] string? roundId,
-            [FromQuery] bool? isDeployed)
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                return await _projectSubmissionsKhoaHldService.SearchProjectSubmissionsAsync(
+                var response = await _projectSubmissionsKhoaHldService.SearchProjectSubmissionsAsync(
                     keyword,
                     teamId,
                     roundId,
-                    isDeployed);
+                    pageNumber,
+                    pageSize);
+
+                var apiResponse = new ApiResponse<PagedResult<ProjectSubmissionsKhoaHld>>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Project submissions searched successfully",
+                    Data = response
+                };
+                return StatusCode(StatusCodes.Status200OK, apiResponse);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                var apiResponse = new ApiResponse<PagedResult<ProjectSubmissionsKhoaHld>>
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = "Project submissions searched unsuccessfully",
+                    Data = null
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, apiResponse);
             }
-
-            return [];
         }
 
         [HttpPost]

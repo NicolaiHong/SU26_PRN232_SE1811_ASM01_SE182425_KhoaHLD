@@ -1,4 +1,5 @@
 using HEMSystems.Entities.KhoaHLD.Models;
+using HEMSystems.Services.KhoaHLD.DTOs.Common;
 using HEMSystems.Services.KhoaHLD.DTOs.ProjectSubmission;
 
 namespace HEMSystems.Services.KhoaHLD
@@ -9,11 +10,12 @@ namespace HEMSystems.Services.KhoaHLD
 
         Task<ProjectSubmissionGetByIdResponse?> GetProjectSubmissionByIdAsync(int submissionId);
 
-        Task<List<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(
+        Task<PagedResult<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(
             string? keyword,
             string? teamId,
             string? roundId,
-            bool? isDeployed);
+            int pageNumber,
+            int pageSize);
 
         Task<int> CreateProjectSubmissionAsync(ProjectSubmissionCreateRequest submission);
 
