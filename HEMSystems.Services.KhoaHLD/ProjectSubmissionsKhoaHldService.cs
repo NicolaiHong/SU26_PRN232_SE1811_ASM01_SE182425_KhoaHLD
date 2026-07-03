@@ -35,7 +35,9 @@ namespace HEMSystems.Services.KhoaHLD
                 var submission = await _repository.GetByIdAsync(submissionId);
 
                 if (submission == null)
+                {
                     return false;
+                }
 
                 return await _repository.RemoveAsync(submission);
             }
@@ -77,19 +79,19 @@ namespace HEMSystems.Services.KhoaHLD
             return null;
         }
 
-        public async Task<PagedResult<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(
-            string? keyword,
-            string? teamId,
-            string? roundId,
-            int pageNumber,
-            int pageSize)
+        public async Task<PagedResult<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(ProjectSubmissionSearchRequest request)
         {
-            pageNumber = Math.Max(pageNumber, 1);
-            pageSize = Math.Clamp(pageSize, 1, 100);
+            var pageNumber = Math.Max(request.PageNumber, 1);
+            var pageSize = Math.Clamp(request.PageSize, 1, 100);
 
             try
             {
-                var (items, totalItems) = await _repository.SearchAsync(keyword, teamId, roundId, pageNumber, pageSize);
+                var (items, totalItems) = await _repository.SearchAsync(
+                    request.Keyword,
+                    request.TeamId,
+                    request.RoundId,
+                    pageNumber,
+                    pageSize);
 
                 return new PagedResult<ProjectSubmissionsKhoaHld>
                 {

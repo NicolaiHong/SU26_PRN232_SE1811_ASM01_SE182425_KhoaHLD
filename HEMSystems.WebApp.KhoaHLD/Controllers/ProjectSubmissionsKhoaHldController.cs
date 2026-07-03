@@ -11,7 +11,6 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1,2")]
     public class ProjectSubmissionsKhoaHldController : ControllerBase
     {
         private readonly IProjectSubmissionsKhoaHldService _projectSubmissionsKhoaHldService;
@@ -22,24 +21,24 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
         }
 
         [HttpGet]
-        [EnableQuery(PageSize = 50)]
-        public async Task<IQueryable<ProjectSubmissionsKhoaHld>> Get()
+        [Authorize]
+        [EnableQuery]
+        public async Task<List<ProjectSubmissionsKhoaHld>> Get()
         {
             try
             {
-                var submissions = await _projectSubmissionsKhoaHldService.GetAllProjectSubmissionsAsync();
-
-                return submissions.AsQueryable();
+                return await _projectSubmissionsKhoaHldService.GetAllProjectSubmissionsAsync();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return Array.Empty<ProjectSubmissionsKhoaHld>().AsQueryable();
+            return [];
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "1,2")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -78,22 +77,13 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
             }
         }
 
-        [HttpGet("Search")]
-        public async Task<IActionResult> Search(
-            [FromQuery] string? keyword,
-            [FromQuery] string? teamId,
-            [FromQuery] string? roundId,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+        [HttpGet("search")]
+        [Authorize]
+        public async Task<IActionResult> Search([FromQuery] ProjectSubmissionSearchRequest request)
         {
             try
             {
-                var response = await _projectSubmissionsKhoaHldService.SearchProjectSubmissionsAsync(
-                    keyword,
-                    teamId,
-                    roundId,
-                    pageNumber,
-                    pageSize);
+                var response = await _projectSubmissionsKhoaHldService.SearchProjectSubmissionsAsync(request);
 
                 var apiResponse = new ApiResponse<PagedResult<ProjectSubmissionsKhoaHld>>
                 {
@@ -117,6 +107,7 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> Post([FromBody] ProjectSubmissionCreateRequest request)
         {
             try
@@ -156,6 +147,7 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> Put(int id, [FromBody] ProjectSubmissionUpdateRequest request)
         {
             try
@@ -195,6 +187,7 @@ namespace HEMSystems.WebApp.KhoaHLD.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> Delete(int id)
         {
             try

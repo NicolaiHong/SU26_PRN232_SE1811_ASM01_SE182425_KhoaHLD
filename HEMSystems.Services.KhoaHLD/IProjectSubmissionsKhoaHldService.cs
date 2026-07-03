@@ -10,12 +10,7 @@ namespace HEMSystems.Services.KhoaHLD
 
         Task<ProjectSubmissionGetByIdResponse?> GetProjectSubmissionByIdAsync(int submissionId);
 
-        Task<PagedResult<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(
-            string? keyword,
-            string? teamId,
-            string? roundId,
-            int pageNumber,
-            int pageSize);
+        Task<PagedResult<ProjectSubmissionsKhoaHld>> SearchProjectSubmissionsAsync(ProjectSubmissionSearchRequest request);
 
         Task<int> CreateProjectSubmissionAsync(ProjectSubmissionCreateRequest submission);
 

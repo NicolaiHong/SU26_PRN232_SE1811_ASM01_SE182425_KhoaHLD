@@ -166,14 +166,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/ProjectSubmissionsKhoaHld/Search?keyword=AI&teamId=TEAM01&roundId=R1&pageNumber=1&pageSize=5",
+              "raw": "{{baseUrl}}/api/ProjectSubmissionsKhoaHld/search?keyword=AI&teamId=TEAM01&roundId=R1&pageNumber=1&pageSize=5",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "ProjectSubmissionsKhoaHld",
-                "Search"
+                "search"
               ],
               "query": [
                 {
@@ -322,12 +322,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/ProjectSubmissionsKhoaHld?$filter=contains(ProjectName,'AI')&$select=SubmissionKhoahldId,ProjectName,TeamId,RoundId,IsDeployed&$orderby=SubmissionKhoahldId desc&$top=5&$count=true",
+              "raw": "{{baseUrl}}/odata/ProjectSubmissionsKhoaHld?$filter=contains(ProjectName,'AI')&$select=SubmissionKhoahldId,ProjectName,TeamId,RoundId,IsDeployed&$orderby=SubmissionKhoahldId desc&$top=5&$count=true",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "api",
+                "odata",
                 "ProjectSubmissionsKhoaHld"
               ],
               "query": [
